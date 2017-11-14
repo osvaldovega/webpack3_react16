@@ -1,0 +1,12 @@
+language: node_js
+cache: npm
+node_js:
+  - "9"
+  - "8"
+  - "7"
+  - "6"
+  - "5"
+script: npm run test:CI
+after_success:
+  # Send coverage data to coveralls.
+  - npm run test:cover:CI

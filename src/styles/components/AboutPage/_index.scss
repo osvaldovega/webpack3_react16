@@ -1,0 +1,34 @@
+.aboutpage {
+  width: 90%;
+  height: 100%;
+  background-color: white;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+
+  & > div {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+
+    & > h1 {
+      font-size: 20px;
+      color: black;
+      font-weight: 300;
+    }
+
+    & > a {
+      text-decoration: none;
+      color: magenta;
+      font-size: 16px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
