@@ -10,12 +10,14 @@ const GLOBALS = {
 };
 
 const config = {
-  entry: path.resolve(__dirname, 'src/index'),
+  entry: {
+    app: [path.resolve(__dirname, 'src/index')],
+  },
 
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: '[name].[chunkhash].js',
+    filename: '[name].[hash].js',
   },
 
   target: 'web',
@@ -35,8 +37,8 @@ const config = {
     new ExtractTextPlugin('[name].[contenthash].css'),
 
     new HtmlWebpackPlugin({
-      template: 'src/index.ejs',
-      favicon: 'src/favicon.ico',
+      template: path.join(__dirname, 'src', 'index.ejs'),
+      favicon: path.join(__dirname, 'src', 'favicon.ico'),
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -53,6 +55,7 @@ const config = {
       // Note that you can add custom options here if you need to handle other custom logic in index.html
       // To track JavaScript errors via TrackJS, sign up for a free trial at TrackJS.com and enter your token below.
       trackJSToken: '',
+      chunks: ['commons', 'app'],
     }),
 
     new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),

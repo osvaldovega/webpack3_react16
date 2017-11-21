@@ -5,17 +5,19 @@ import autoprefixer from 'autoprefixer';
 import path from 'path';
 
 const config = {
-  entry: [
-    './src/webpack-public-path',
-    'react-hot-loader/patch',
-    'webpack-hot-middleware/client?reload=true',
-    path.resolve(__dirname, 'src/index.js'), // Defining path seems necessary for this to work consistently on Windows machines.
-  ],
+  entry: {
+    app: [
+      './src/webpack-public-path',
+      'react-hot-loader/patch',
+      'webpack-hot-middleware/client?reload=true',
+      path.resolve(__dirname, 'src/index.js'), // Defining path seems necessary for this to work consistently on Windows machines.
+    ],
+  },
 
   output: {
     path: path.resolve(__dirname, 'dist'), // Note: Physical files are only output by the production build task `npm run build`.
     publicPath: '/',
-    filename: '[name].bundle.js',
+    filename: '[name].[hash].bundle.js',
   },
 
   target: 'web',
@@ -72,12 +74,14 @@ const config = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({     // Create HTML file that includes references to bundled CSS and JS.
-      template: 'src/index.ejs',
+      template: path.join(__dirname, 'src', 'index.ejs'),
+      favicon: path.join(__dirname, 'src', 'favicon.ico'),
       minify: {
         removeComments: true,
         collapseWhitespace: true,
       },
       inject: true,
+      chunks: ['commons', 'app'],
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: false,
@@ -94,6 +98,9 @@ const config = {
     new CircularDependencyPlugin({
       exclude: /a\.js|node_modules/, // exclude node_modules
       failOnError: false, // show a warning when there is a circular dependency
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['commons'],
     }),
   ],
 };
